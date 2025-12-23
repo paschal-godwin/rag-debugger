@@ -102,15 +102,15 @@ rag-debugger/
 ├── utils.py               # Utilities
 │
 ├── data/
-│   ├── docs/              # PDFs (ignored)
-│   ├── indexes/           # FAISS indexes (ignored)
-│   ├── logs/              # Logs (ignored)
+│   ├── docs/              # PDFs 
+│   ├── indexes/           # FAISS indexes 
+│   ├── logs/              # Logs 
 │   └── testset.example.csv
 │
-├── runs/                  # Saved evaluation runs (ignored)
+├── runs/                  # Saved evaluation runs 
 │
 ├── assets/
-│   └── screenshots/       # UI screenshots (optional)
+│   └── screenshots/       # UI screenshots 
 │
 ├── requirements.txt
 ├── .env.example
