@@ -171,7 +171,7 @@ elif mode == "Batch Evaluation":
     test_rows = load_testset_csv(testset_path)
     st.write(f"Loaded **{len(test_rows)}** test questions from `{testset_path}`")
 
-    # Build a clean config snapshot (IMPORTANT: keep primitives only)
+    
     config = {
         "embedding_model": "text-embedding-3-large",
         "index_type": "faiss",
@@ -184,9 +184,9 @@ elif mode == "Batch Evaluation":
         "testset_path": testset_path,
     }
 
-    # Versioning for fairness (simple + effective)
+    # Versioning for fairness 
     dataset_id = os.path.basename(testset_path)
-    dataset_hash = stable_hash(test_rows)  # test_rows is list[dict] -> good
+    dataset_hash = stable_hash(test_rows)  
     index_id = "faiss_index"
     index_path = "data/indexes/faiss_index"
     index_hash = str(os.path.getmtime(index_path)) if os.path.exists(index_path) else ""
@@ -194,7 +194,6 @@ elif mode == "Batch Evaluation":
     run_eval = st.button("Run Batch Evaluation")
 
     if run_eval:
-        # Create a run ONLY at execution time
         run_id = create_run(
             config=config,
             notes=run_notes,
@@ -228,7 +227,7 @@ elif mode == "Batch Evaluation":
                 best_score = float(retrieved[0][1]) if retrieved else None
                 weak_retrieval = (best_score is not None and best_score > WEAK_RETRIEVAL_THRESHOLD)
 
-                # Build stable retrieved_ids + distances (so you can compare later)
+                # Build stable retrieved_ids + distances 
                 retrieved_ids = []
                 distances = []
                 for rank, (doc, score) in enumerate(retrieved, start=1):
@@ -256,7 +255,7 @@ elif mode == "Batch Evaluation":
                     f"hit@{top_k}": 1 if hit_info.get("hit_source") else 0,
                 }
 
-                # Save per-query run record (this is the main “run-save” feature)
+                # Save per-query run record 
                 expected_source = row.get("expected_source")
                 expected_page = row.get("expected_page")
                 expected_id = f"{expected_source}::page={expected_page}"
@@ -307,7 +306,7 @@ elif mode == "Batch Evaluation":
 
         st.success(f"Saved run ✅  run_id={run_id[:8]}  (stored in SQLite via run_store.py)")
 
-        # Display (your existing UI stays)
+        # Display
         st.markdown("### Summary")
         st.write(f"Questions evaluated: **{summary['n']}**")
         st.write(f"Hit@{top_k} (by source): **{summary['hit_source_rate']*100:.1f}%**")
@@ -339,7 +338,7 @@ elif mode == "Compare Runs":
         st.info("No saved runs found yet. Run a Batch Evaluation first.")
         st.stop()
 
-    # Build friendly labels
+    
     def run_label(r: dict) -> str:
         notes = (r.get("notes") or "").strip()
         note_part = f" | {notes}" if notes else ""
